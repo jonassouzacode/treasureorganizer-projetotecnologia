@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Coleção</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Book Antiqua, serif;
+            background: #C6C0B9;
+            min-height: 100hv;
+        }
+
+        .navbar {
+            background: #422701;
+            padding: 12px 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: #D6B588;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;            
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-user {
+            padding: 6px 14px;
+            background: #705E46;
+            color: #D6B588; 
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: Book Antiqua, serif;
+            cursor: default;
+        }
+
+        .btn-logout {
+            padding: 6px 14px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: Book Antiqua, serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-logout:hover {
+            background: #660F09;
+        }
+
+        .main {
+            padding: 2rem;
+        }
+
+        .welcome {
+            color: #422701;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .welcome-sub {
+            color: #705E46;
+            font-size: 13px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #D6B588;
+        }
+
+        .tab {
+            padding: 8px 24px;
+            background: transparent;
+            border: none;
+            font-family: Book Antiqua, serif;
+            font-size: 14px;
+            color: #705E46;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: #422701;
+            border-bottom: 2px solid #422701;
+            font-weight: 500;
+        }
+
+        .tab:hover {
+            color: #895129;
+            border-bottom: 2px solid #895129;
+        }
+
+        .btn-add {
+            padding: 7px 16px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: Book Antiqua, serif;
+            margin-bottom: 1rem;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-add:hover {
+            background: #660F09;
+        }
+
+        .item {
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-title {
+            color: #422701;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .item-title:hover {
+            color: #895129;
+        }
+
+        .item-meta {
+            color: #705E46;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            background: #895129;;
+            color: #D6B588;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer:
+            font-family: Book Antiqua, serif;
+            background: #f5ede0;
+            color: #422701;
+            border: 1px solid #D6B588;
+        }
+
+        .btn-action:hover {
+            background: #895129;
+            color: #D6B588;
+            border-color: #895129;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(66, 39, 1, 0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 12px;
+            padding: 2rem;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .modal-title {
+            color: #422701;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .modal-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #D6B588;
+            font-size: 13px;
+        }
+
+        .modal-label {
+            color: #705E46;
+        }
+
+        .modal-value {
+            color: #422701;
+        }
+
+        .modal-close {
+            margin-top: 1.25rem;
+            width: 100%;
+            padding: 8px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: Book Antiqua, serif;
+        }
+
+        .modal-close:hover {
+            background: #660F09;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">
+            <i data-lucide="library-big" style="width:18px;height:18px;color:#D6B588;"></i>
+            TREASURE ORGANIZER
+        </div>
+        <div class="navbar-right">
+            <span class="btn-user">{{ request.user.username }}</span>
+            <a href="/logout/" class="btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <p class="welcome">Bem-vindo, {{ request.user.username }}!</p>
+        <p class="welcome-sub">Gira aqui os seus colecionáveis</p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('colecao', this)">Minha Coleção</button>
+            <button class="tab" onclick="showTab('desejos', this)">Lista de Desejos</button>
+        </div>
+        
+        <div id="colecao" class="tab-content active">
+            <a href="/colecionaveis/adicionar" class="btn-add">+ Adicionar Colecionável </a>
+
+            {% for item in colecao %}
+            <div class="item">
+                <div>
+                    <span class="item-title" onclick="openModal(
+                        '{{ item.id_colecionavel.titulo }}',
+                        '{{ item.id_colecionavel.tipo_colecionavel }}',
+                        '{{ item.id_colecionavel.id_genero.genero }}',
+                        '{{ item.id_colecionavel.id_idioma.idioma }}',
+                        '{{ item.id_colecionavel.ano_lancamento }}',
+                        '{{ item.data_aquisicao }}'
+                    )">{{ item.id_colecionavel.titulo }}</span>
+
+                    <span class="badge">{{ item.id_colecionavel.tipo_colecionavel}}</span>
+
+                    <div class="item-meta">{{ item.id_colecionavel.ano_lancamento }}</div>
+                </div>
+                <div class="item-actions">
+                    <a href="/colecionaveis/mover/{{ item.id_colecionavel.id }}/"><button class="btn-action">→ Desejos</button></a>
+                    <a href="/colecionaveis/editar/{{ item.id_colecionavel.id }}/"><button class="btn-action">Editar</button></a>
+                    <a href="/colecionaveis/remover/{{ item.id_colecionavel.id }}/"><button class="btn-action">Remover</button></a>
+                </div>
+            </div>
+
+            {% empty %}
+                <p style="color:#705E46;font-size:13px;">Ainda não possui uma coleção! Que tal adicionar um colecionável? </p>
+            {% endfor %}  
+        </div>
+        
+        <div id="desejos" class="tab-content">
+            <a href="/colecionaveis/adicionar-desejo" class="btn-add">+ Adicionar à Lista de Desejos </a>
+
+            {% for item in desejos %}
+            <div class="item">
+                <div>
+                    <span class="item-title" onclick="openModal(
+                        '{{ item.id_colecionavel.titulo }}',
+                        '{{ item.id_colecionavel.tipo_colecionavel }}',
+                        '{{ item.id_colecionavel.id_genero.genero }}',
+                        '{{ item.id_colecionavel.id_idioma.idioma }}',
+                        '{{ item.id_colecionavel.ano_lancamento }}',
+                        '{{ item.data_adicao }}'
+                    )">{{ item.id_colecionavel.titulo }}</span>
+
+                    <span class="badge">{{ item.id_colecionavel.tipo_colecionavel}}</span>
+
+                    <div class="item-meta">{{ item.id_colecionavel.ano_lancamento }}</div>
+                </div>
+                <div class="item-actions">
+                    <a href="/colecionaveis/mover-colecao/{{ item.id_colecionavel.id }}/"><button class="btn-action">→ Coleção</button></a>
+                    <a href="/colecionaveis/editar/{{ item.id_colecionavel.id }}/"><button class="btn-action">Editar</button></a>
+                    <a href="/colecionaveis/remover-desejo/{{ item.id_colecionavel.id }}/"><button class="btn-action">Remover</button></a>
+                </div>
+            </div>
+
+            {% empty %}
+                <p style="color:#705E46;font-size:13px;">Ainda não possui uma lista de desejos! </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <p class="modal-title" id="modal-title"></p>
+            <div class="modal-row">
+                <span class="modal-label">Tipo</span>
+                <span class="modal-value" id="modal-tipo"></span>
+            </div>
+
+            <div class="modal-row">
+                <span class="modal-label">Gênero</span>
+                <span class="modal-value" id="modal-genero"></span>
+            </div>
+
+            <div class="modal-row">
+                <span class="modal-label">Idioma</span>
+                <span class="modal-value" id="modal-idioma"></span>
+            </div>
+
+            <div class="modal-row">
+                <span class="modal-label">Ano de Lançamento</span>
+                <span class="modal-value" id="modal-ano"></span>
+            </div>
+
+            <div class="modal-row">
+                <span class="modal-label">Data de Aquisição</span>
+                <span class="modal-value" id="modal-data"></span>
+            </div>
+
+            <button class="modal-close" onclick="closeModal()">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tab, btn){
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function openModal(titulo, tipo, genero, idioma, ano, data){
+            document.getElementById('modal-title').textContent = titulo;
+            document.getElementById('modal-tipo').textContent = tipo;
+            document.getElementById('modal-genero').textContent = genero;
+            document.getElementById('modal-idioma').textContent = idioma;
+            document.getElementById('modal-ano').textContent = ano;
+            document.getElementById('modal-data').textContent = data;
+            document.getElementById('modal').classList.add('open');
+        }
+
+        function closeModal(){
+            document.getElementById('modal').classList.remove('open');
+        }
+    </script>
+    
+    <script>lucide.createIcons();</script>
+                    
+</body>
+</html>
