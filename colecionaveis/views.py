@@ -92,6 +92,8 @@ def colecao(request):
     return render(request, 'colecionaveis/colecao.html', {
         'colecao': colecao,
         'desejos': desejos,
+        'generos': Genero.objects.all(),
+        'idiomas': Idioma.objects.all(),
     })
 
 def get_catalogo_context(user_id):
@@ -168,6 +170,19 @@ def adicionar_colecao(request):
             context['destino_titulo'] = 'Adicionar à Coleção'
             context['erro'] = 'Este ISBN já existe na base de dados!'
             return render(request, 'colecionaveis/adicionar.html', context)
+        
+        if Colecao.objects.filter(id_usuario=request.user.id, id_colecionavel=colecionavel).exists():
+            context = get_catalogo_context(request.user.id)
+            context['destino_titulo'] = 'Adicionar à Coleção'
+            context['erro'] = 'Esse colecionável já existe na sua coleção!'
+            return render(request, 'colecionaveis/adicionar.html', context)
+        
+        if ListaDesejos.objects.filter(id_usuario=request.user.id, id_colecionavel=colecionavel).exists():
+            context = get_catalogo_context(request.user.id)
+            context['destino_titulo'] = 'Adicionar à Coleção'
+            context['erro'] = 'Esse colecionável já existe na sua lista de desejos! Transfira-o para sua coleção.'
+            return render(request, 'colecionaveis/adicionar.html', context)
+        
         Colecao.objects.create(
             id_usuario=request.user.id,
             id_colecionavel=colecionavel,
@@ -187,6 +202,19 @@ def adicionar_desejos(request):
             context['destino_titulo'] = 'Adicionar à Lista de Desejos'
             context['erro'] = 'Este ISBN já existe na base de dados!'
             return render(request, 'colecionaveis/adicionar.html', context)
+        
+        if ListaDesejos.objects.filter(id_usuario=request.user.id, id_colecionavel=colecionavel).exists():
+            context = get_catalogo_context(request.user.id)
+            context['destino_titulo'] = 'Adicionar à Lista de Desejos'
+            context['erro'] = 'Esse colecionável já existe na sua lista de desejos!'
+            return render(request, 'colecionaveis/adicionar.html', context)
+        
+        if Colecao.objects.filter(id_usuario=request.user.id, id_colecionavel=colecionavel).exists():
+            context = get_catalogo_context(request.user.id)
+            context['destino_titulo'] = 'Adicionar à Lista de Desejos'
+            context['erro'] = 'Esse colecionável já existe na sua coleção!'
+            return render(request, 'colecionaveis/adicionar.html', context)
+        
         ListaDesejos.objects.create(
             id_usuario=request.user.id,
             id_colecionavel=colecionavel
