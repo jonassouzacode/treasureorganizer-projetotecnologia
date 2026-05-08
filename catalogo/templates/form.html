@@ -110,6 +110,9 @@
             {% csrf_token %}
             <label>{{ campo }}</label>
             <input type="text" name="nome" value="{{ valor|default:'' }}" placeholder="{{ campo }}">
+            {% if erro %}
+                <p style="color:#660F09;font-size:13px;margin-bottom:1rem;">{{ erro }}</p>
+            {% endif %}
             <button type="submit">Guardar</button>
         </form>
         <a href="{% url url_voltar %}" class="btn-voltar"> ← Voltar</a>

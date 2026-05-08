@@ -3,9 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Adicionar Tipo de Encadernação</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body {
+            font-family: Book Antiqua, serif;
+            background: #C6C0B9;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: #422701;
+            padding: 12px 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: #D6B588;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-user {
+            padding: 6px 14px;
+            background: #705E46;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: default;
+            font-family: Book Antiqua, serif;
+        }
+
+        .btn-logout {
+            padding: 6px 14px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: Book Antiqua, serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-logout:hover { 
+            background: #660F09; 
+        }
+
+         .page {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            flex: 1;
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #422701;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            color: #422701;
+            font-size: 15px;
+            font-weight: 500;
+            margin: 1.25rem 0 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid #D6B588;
+        }
+
+        label {
+            font-size: 12px;
+            color: #705E46;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #D6B588;
+            border-radius: 8px;
+            background: #fff8f0;
+            font-size: 14px;
+            color: #422701;
+            font-family: Book Antiqua, serif;
+            margin-bottom: 1rem;
+        }
+
+        input:focus { 
+            outline: none; 
+            border-color: #705E46; 
+        }
+
+        select {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #895129;
+            border-radius: 8px;
+            background: #fff8f0;;
+            font-size: 14px;
+            color: #422701;
+            font-family: Book Antiqua, serif;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        select:focus { 
+            outline: none; 
+            border-color: #705E46;
+        }
+
+        select option { 
+            background: #fff8f0;
+            color: #422701; 
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: Book Antiqua, serif;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover { 
+            background: #660F09; 
+        }
+
+        .btn-voltar {
+            display: block;
+            margin-top: 1rem;
+            padding: 10px;
+            background: #895129;
+            color: #D6B588;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            font-family: Book Antiqua, serif;
+        }
+
+        .btn-voltar:hover { 
+            background: #660F09; 
+        }
+
+        
+    </style>
 </head>
 <body>
-    
+    <div class="navbar">
+        <div class="navbar-brand">
+            <i data-lucide="library-big" style="width:18px;height:18px;color:#D6B588;"></i>
+            TREASURE ORGANIZER
+        </div>
+        <div class="navbar-right">
+            <span class="btn-user">{{ request.user.username }}</span>
+            <a href="/logout/" class="btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="page">
+    <div class="form-container">
+        <h1>Adicionar Tipo de Encadernação</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Nome</label>
+            <input type="text" name="nome" required>
+
+            <label>Tipo</label>
+            <select name="tipo" required>
+                <option value="">Selecione</option>
+                <option value="capa_dura">Capa dura</option>
+                <option value="capa_mole">Capa mole</option>
+            </select>
+            
+            {% if erro %}
+                <p style="color:#660F09;font-size:13px;margin-bottom:1rem;">{{ erro }}</p>
+            {% endif %}
+
+            <button type="submit" class="btn-submit">Salvar</button>
+        </form>
+
+        <a href="{% url url_voltar %}" class="btn-voltar">Voltar</a>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+
 </body>
 </html>
+    

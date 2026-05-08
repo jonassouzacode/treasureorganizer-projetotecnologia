@@ -31,6 +31,8 @@ def generos_create(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
         if nome:
+            if Genero.objects.filter(genero__iexact=nome).exists():
+                return render(request, 'catalogo/form.html', {'titulo': 'Gênero', 'campo': 'Nome do Gênero', 'url_voltar': 'generos_list', 'erro': 'Este gênero já existe!'})
             Genero.objects.create(genero=nome)
             return redirect('generos_list')
     return render(request, 'catalogo/form.html', {'titulo': 'Gênero', 'campo': 'Nome do Gênero', 'url_voltar': 'generos_list'})
@@ -81,6 +83,8 @@ def idiomas_create(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
         if nome:
+            if Idioma.objects.filter(idioma__iexact=nome).exists():
+                return render(request, 'catalogo/form.html', {'titulo': 'Idioma', 'campo': 'Nome do Idioma', 'url_voltar': 'idiomas_list', 'erro': 'Este idioma já existe!'})
             Idioma.objects.create(idioma=nome)
             return redirect('idiomas_list')
     return render(request, 'catalogo/form.html', {'titulo': 'Idioma', 'campo': 'Nome do Idioma', 'url_voltar': 'idiomas_list'})
@@ -131,6 +135,8 @@ def autores_create(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
         if nome:
+            if Autor.objects.filter(nome__iexact=nome).exists():
+                return render(request, 'catalogo/form.html', {'titulo': 'Autor', 'campo': 'Nome do Autor', 'url_voltar': 'autores_list', 'erro': 'Este autor já existe!'})
             Autor.objects.create(nome=nome)
             return redirect('autores_list')
     return render(request, 'catalogo/form.html', {'titulo': 'Autor', 'campo': 'Nome do Autor', 'url_voltar': 'autores_list'})
@@ -181,6 +187,8 @@ def artistas_create(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
         if nome:
+            if Artista.objects.filter(nome__iexact=nome).exists():
+                return render(request, 'catalogo/form.html', {'titulo': 'Artista', 'campo': 'Nome do Artista', 'url_voltar': 'artistas_list', 'erro': 'Este artista já existe!'})
             Artista.objects.create(nome=nome)
             return redirect('artistas_list')
     return render(request, 'catalogo/form.html', {'titulo': 'Artista', 'campo': 'Nome do Artista', 'url_voltar': 'artistas_list'})
@@ -231,6 +239,8 @@ def editoras_create(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
         if nome:
+            if Editora.objects.filter(nome__iexact=nome).exists():
+                return render(request, 'catalogo/form.html', {'titulo': 'Editora', 'campo': 'Nome da Editora', 'url_voltar': 'editoras_list', 'erro': 'Essa editora já existe!'})
             Editora.objects.create(nome=nome)
             return redirect('editoras_list')
     return render(request, 'catalogo/form.html', {'titulo': 'Editora', 'campo': 'Nome da Editora', 'url_voltar': 'editoras_list'})
@@ -281,6 +291,8 @@ def gravadoras_create(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
         if nome:
+            if Gravadora.objects.filter(nome__iexact=nome).exists():
+                return render(request, 'catalogo/form.html', {'titulo': 'Gravadora', 'campo': 'Nome da Gravadora', 'url_voltar': 'gravadoras_list', 'erro': 'Essa gravadora já existe!'})
             Gravadora.objects.create(nome=nome)
             return redirect('gravadoras_list')
     return render(request, 'catalogo/form.html', {'titulo': 'Gravadora', 'campo': 'Nome da Gravadora', 'url_voltar': 'gravadoras_list'})
@@ -332,6 +344,8 @@ def encadernacoes_create(request):
         nome = request.POST.get('nome')
         tipo = request.POST.get('tipo')
         if nome:
+            if Encadernacao.objects.filter(nome__iexact=nome).exists():
+                return render(request, 'catalogo/form.html', {'titulo': 'Encadernacao', 'campo': 'Nome da Encadernacao', 'url_voltar': 'encadernacoes_list', 'erro': 'Esse tipo de encadernação já existe!'})
             Encadernacao.objects.create(nome=nome, tipo_encadernacao=tipo)
             return redirect('encadernacoes_list')
     return render(request, 'catalogo/form_encadernacao.html', {'titulo': 'Encadernação', 'url_voltar': 'encadernacoes_list'})
