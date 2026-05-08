@@ -27,6 +27,10 @@ de perfil: administrador e utilizador.
 
 > Requer MySQL com a base de dados `treasureorganizer` configurada.
 
+## Base de Dados
+
+O ficheiro `database/treasureorganizer.sql` contém o arquivo SQL da base de dados.
+
 ## Estrutura
 
 - `accounts/` — autenticação e modelo de utilizador
