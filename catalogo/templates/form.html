@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Book Antiqua, serif;
+            background: #C6C0B9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar { 
+            background: #422701; 
+            padding: 12px 2rem; 
+            display: flex;             
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .container {
+            width: 420px;
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #422701;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-size: 12px;
+            color: #705E46;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #D6B588;
+            border-radius: 8px;
+            background: #fff8f0;
+            font-size: 14px;
+            color: #422701;
+            font-family: Book Antiqua, serif;
+            margin-bottom: 1.25rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #705E46;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: Book Antiqua, serif;
+        }
+
+        button:hover{
+            background: #660F09;
+        }
+
+        .btn-voltar {
+            display: block;
+            margin-top: 1rem;
+            padding: 10px;
+            background: #895129;
+            color: #D6B588;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            font-family: Book Antiqua, serif;
+        }
+
+        .btn-voltar:hover {
+            background: #660F09;
+            color: #D6B588;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{% if valor %}Editar{% else %}Adicionar{% endif %} {{ titulo }}</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label>{{ campo }}</label>
+            <input type="text" name="nome" value="{{ valor|default:'' }}" placeholder="{{ campo }}">
+            <button type="submit">Guardar</button>
+        </form>
+        <a href="{% url url_voltar %}" class="btn-voltar"> ← Voltar</a>
+    </div>
+</body>
+</html>

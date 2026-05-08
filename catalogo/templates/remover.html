@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remover {{titulo }}</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Book Antiqua, serif;
+            background: #C6C0B9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 420px;
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            color: #660F09;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #422701;
+            font-size: 14px;
+            margin-bottom: 1.5rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-remover {
+            flex: 1;
+            padding: 10px;
+            background: #660F09;
+            color: #D6B588;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: Book Antiqua, serif;
+        }
+
+        .btn-remover:hover {
+            background: #422701;
+        }
+
+        .btn-voltar {
+            flex: 1;
+            padding: 10px;
+            background: #f5ede0;
+            color: #422701;
+            border: 1px solid #D6B588;
+            border-radius: 8px;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Book Antiqua, serif;
+        }
+
+        .btn-voltar:hover {
+            background: #895129;
+            color: #D6B588;
+            border-color: #895129;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Confirmar Remoção</h1>
+        <p> Tem certeza que deseja remover <strong>{{ nome }}</strong>?</p>
+
+        <div class="actions">
+            <form method="POST" style="flex:1">
+                {% csrf_token %}
+                <button type="submit" class="btn-remover" style="width:100%">Remover</button>
+                {% if erro %}
+                <p style="color:#660F09;font-size:13px;margin-bottom:1rem;"> {{ erro }}</p>
+                {% endif %}
+            </form>
+            <a href="{% url url_voltar %}" class="btn-voltar">Voltar</a>
+        </div>
+    </div>
+</body>
+</html>

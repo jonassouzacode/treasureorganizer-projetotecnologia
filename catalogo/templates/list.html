@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Book Antiqua, serif;
+            background: #C6C0B9;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: #422701;
+            padding: 12px 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-brand {
+            color: #D6B588;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-user {
+            padding: 6px 14px;
+            background: #705E46;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: default;
+            font-family: Book Antiqua, serif;
+        }
+
+        .btn-logout {
+            padding: 6px 14px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: Book Antiqua, serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-logout:hover {
+            background: #660F09;
+        }
+
+        .main {
+            padding: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            color: #422701;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .btn-add {
+            padding: 7px 16px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: Book Antiqua, serif;
+            text-decoration: none;
+        }
+
+        .btn-add:hover {
+            background: #660F09;
+        }
+
+        .item {
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-nome {
+            color: #422701;
+            font-size: 14px;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+         .btn-action {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: Book Antiqua, serif;
+            background: #f5ede0;
+            color: #422701;
+            border: 1px solid #D6B588;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-action:hover {
+            background: #895129;
+            color: #D6B588;
+            border-color: #895129;
+        }
+
+        .btn-voltar {
+            display: block;
+            margin-top: 1rem;
+            padding: 10px;
+            background: #895129;
+            color: #D6B588;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            font-family: Book Antiqua, serif;
+        }
+
+        .btn-voltar:hover {
+            background: #660F09;
+            color: #D6B588;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">
+            <i data-lucide="library-big" style="width:18px;height:18px;color:#D6B588;"></i>
+            TREASURE ORGANIZER
+        </div>
+        <div class="navbar-right">
+            <span class="btn-user">{{ request.user.username }}</span>
+            <a href="/logout/" class="btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="top">
+            <h1>{{ titulo }}</h1>
+            <a href="{% url url_criar %}" class="btn-add">+ Adicionar</a>
+        </div>
+
+        {% for item in itens %}
+        <div class="item">
+            <span class="item-nome">{{ item }}</span>
+            <div class="item-actions">
+                <a href="{% url url_editar item.id %}" class="btn-action">Editar</a>
+                <a href="{% url url_remover item.id %}" class="btn-action">Remover</a>
+            </div>
+        </div>
+
+        {% empty %}
+            <p style="color:#705E46;font-size:13px;"> Ainda não existem itens registrados!</p>
+        {% endfor %}
+
+        <a href="{% url 'admin_pagina_inicial' %}" class="btn-voltar">← Voltar ao painel inicial</a>
+    </div>
+    <script>lucide.createIcons();</script>           
+</body>
+</html>
