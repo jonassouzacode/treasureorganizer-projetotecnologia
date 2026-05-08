@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <title>LOGIN</title>
+    <style>
+        body {
+            font-family: Book Antiqua;
+            background: #C6C0B9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 380px;
+            background: #f5ede0;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid #D6B588;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #705E46;
+            margin: 0 auto 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: 500;
+            color: #422701;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #705E46;
+            margin: 4px 0 0;
+        }
+
+        label {
+            font-size: 13px;
+            color: #705E46;
+            display: block;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            border: 1px solid #D6B588;
+            border-radius: 8px;
+            background: #fff8f0;
+            font-size: 9px;
+            color: #422701;
+            font-family: Book Antiqua;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #705E46;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #705E46;
+            color: #D6B588;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background: #422701;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">
+                <i data-lucide="library-big" style="width:24px;height:24px;color:#D6B588;"></i>
+            </div>
+            <h1>TREASURE ORGANIZER</h1>
+            <p class="subtitle"> inicie a sessão para continuar</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label>utilizador</label>
+            <input type="text" name="username" placeholder="insira aqui o seu username">
+            <label>senha</label>
+            <input type="password" name="password" placeholder="insira aqui a sua senha">
+            
+            {% if form.errors %}
+                <p style="color: #660f09; font-size: 10px; text-align: center;">utilizador ou senha incorretos!</p>
+            {% endif %}
+
+            <button type="submit">entrar</button>
+        </form>
+    </div>
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>
