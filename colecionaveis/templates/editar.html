@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Colecionável</title>
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body { 
+            font-family: Book Antiqua, serif; 
+            background: #C6C0B9; 
+            min-height: 100vh; 
+        }
+
+        .navbar { 
+            background: #422701; 
+            padding: 12px 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .navbar-brand { 
+            color: #D6B588; 
+            font-size: 16px; 
+            font-weight: 500; 
+        }
+
+        .navbar-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.75rem; 
+        }
+
+        .btn-user { 
+            padding: 6px 14px; 
+            background: #705E46; 
+            color: #D6B588; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            cursor: default; 
+            font-family: Book Antiqua, serif; 
+        }
+
+        .btn-logout { 
+            padding: 6px 14px; 
+            background: #895129; 
+            color: #D6B588; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            font-family: Book Antiqua, serif; 
+            text-decoration: none; 
+            display: inline-block; 
+        }
+
+        .btn-logout:hover { 
+            background: #660F09; 
+        }
+
+        .page { 
+            padding: 2rem; 
+            max-width: 700px; 
+            margin: 0 auto; 
+        }
+
+        .form-container { 
+            background: #f5ede0; 
+            border: 1px solid #D6B588; 
+            border-radius: 12px; 
+            padding: 2rem; 
+        }
+
+        h1 { 
+            color: #422701; 
+            font-size: 18px; 
+            font-weight: 500; 
+            margin-bottom: 1.5rem; 
+        }
+
+        h2 { 
+            color: #422701; 
+            font-size: 15px; 
+            font-weight: 500; 
+            margin: 1.25rem 0 0.75rem; 
+            padding-top: 1rem; 
+            border-top: 1px solid #D6B588; 
+        }
+
+        label { 
+            font-size: 12px; 
+            color: #705E46; 
+            display: block; 
+            margin-bottom: 4px; 
+        }
+
+        input[type="text"], input[type="number"] { 
+            display: block; 
+            width: 100%; 
+            padding: 8px 12px; 
+            border: 1px solid #D6B588; 
+            border-radius: 8px; 
+            background: #fff8f0; 
+            font-size: 14px; 
+            color: #422701; 
+            font-family: Book Antiqua, serif; 
+            margin-bottom: 1rem; 
+        }
+
+        input:focus { 
+            outline: none; 
+            border-color: #705E46; 
+        }
+
+        select { 
+            display: block; 
+            width: 100%; 
+            padding: 8px 12px; 
+            border: 1px solid #D6B588; 
+            border-radius: 8px; 
+            background: #fff8f0; 
+            font-size: 14px; 
+            color: #422701; 
+            font-family: Book Antiqua, serif; 
+            margin-bottom: 1rem; 
+            cursor: pointer; 
+        }
+        
+        select:focus { 
+            outline: none; 
+            border-color: #660F09; 
+        }
+
+        select option { 
+            background: #f5ede0; 
+            color: #422701; 
+        }
+
+        .btn-submit { 
+            width: 100%; 
+            padding: 10px; 
+            background: #895129; 
+            color: #D6B588; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            cursor: pointer; 
+            font-family: Book Antiqua, serif; 
+            margin-top: 1rem; 
+        }
+
+        .btn-submit:hover { 
+            background: #660F09; 
+        }
+
+        .btn-voltar { 
+            display: block; 
+            margin-top: 1rem; 
+            padding: 10px; 
+            background: #895129; 
+            color: #D6B588; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            text-align: center; 
+            text-decoration: none; 
+            font-family: Book Antiqua, serif; 
+        }
+
+        .btn-voltar:hover { 
+            background: #660F09; 
+        }
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">TREASURE ORGANIZER</div>
+        <div class="navbar-right">
+            <span class="btn-user">{{ request.user.username }}</span>
+            <a href="/logout/" class="btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="form-container">
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <span style="font-size:14px; color:#705E46;">Editar</span><br>
+                <span style="display:inline-block; margin-top:6px; padding:6px 14px; background:#705E46; color:#D6B588; border-radius:6px; font-size:15px; font-family:Book Antiqua,serif;">{{ colecionavel.titulo }}</span>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <label>Título</label>
+                <input type="text" name="titulo" value="{{ colecionavel.titulo }}">
+
+                <label>Ano de Lançamento</label>
+                <input type="number" name="ano" value="{{ colecionavel.ano_lançamento|default:'' }}">
+
+                <label>Gênero</label>
+                <select name="id_genero">
+                    <option value="">-- Selecionar gênero --</option>
+                    {% for g in generos %}
+                    <option value="{{ g.id }}" {% if colecionavel.id_genero_id == g.id %}selected{% endif %}>{{ g.genero }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Idioma</label>
+                <select name="id_idioma">
+                    <option value="">-- Selecionar idioma --</option>
+                    {% for i in idiomas %}
+                    <option value="{{ i.id }}" {% if colecionavel.id_idioma_id == i.id %}selected{% endif %}>{{ i.idioma }}</option>
+                    {% endfor %}
+                </select>
+
+                {% if colecionavel.tipo_colecionavel == 'Livro' %}
+                <h2>Detalhes do Livro</h2>
+
+                <label>ISBN</label>
+                <input type="text" name="isbn" value="{{ livro.isbn|default:'' }}">
+
+                <label>Autor(es)</label>
+                    <div style="background:#fff8f0; border:1px solid #D6B588; border-radius:8px; padding:8px 12px; margin-bottom:1rem; max-height:120px; overflow-y:auto;">
+                        {% for a in autores %}
+                        <div style="margin-bottom:4px;">
+                            <input type="checkbox" name="autores" value="{{ a.id }}" id="autor_{{ a.id }}"
+                                {% if a.id in autores_selecionados %}checked{% endif %}>  <!-- ← marca os já selecionados -->
+                            <label for="autor_{{ a.id }}" style="display:inline; font-size:13px; color:#422701; cursor:pointer;">{{ a.nome }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                <label>Editora</label>
+                <select name="id_editora">
+                    <option value="">-- Selecionar editora --</option>
+                    {% for e in editoras %}
+                    <option value="{{ e.id }}" {% if livro.id_editora_id == e.id %}selected{% endif %}>{{ e.nome }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Tipo de Encadernação</label>
+                <select name="id_encadernacao">
+                    <option value="">-- Selecionar encadernação --</option>
+                    {% for enc in encadernacoes %}
+                    <option value="{{ enc.id }}" {% if livro.id_tipo_encadernacao_id == enc.id %}selected{% endif %}>{{ enc.nome }}</option>
+                    {% endfor %}
+                </select>
+
+                {% elif colecionavel.tipo_colecionavel == 'Album' %}
+                <h2>Detalhes do Álbum</h2>
+
+                <label>Tipo de Álbum</label>
+                <select name="tipo_album">
+                    <option value="CD" {% if album.tipo_album == 'CD' %}selected{% endif %}>CD</option>
+                    <option value="Vinil" {% if album.tipo_album == 'Vinil' %}selected{% endif %}>Vinil</option>
+                </select>
+
+                <label>Artista(s)</label>
+                    <div style="background:#fff8f0; border:1px solid #D6B588; border-radius:8px; padding:8px 12px; margin-bottom:1rem; max-height:120px; overflow-y:auto;">
+                        {% for a in artistas %}
+                        <div style="margin-bottom:4px;">
+                            <input type="checkbox" name="artistas" value="{{ a.id }}" id="artista_{{ a.id }}"
+                                {% if a.id in artistas_selecionados %}checked{% endif %}>  <!-- ← marca os já selecionados -->
+                            <label for="artista_{{ a.id }}" style="display:inline; font-size:13px; color:#422701; cursor:pointer;">{{ a.nome }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                <label>Gravadora</label>
+                <select name="id_gravadora">
+                    <option value="">-- Selecionar gravadora --</option>
+                    {% for g in gravadoras %}
+                    <option value="{{ g.id }}" {% if album.id_gravadora_id == g.id %}selected{% endif %}>{{ g.nome }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Número de Catálogo</label>
+                <input type="text" name="numero_catalogo" value="{{ album.numero_catalogo|default:'' }}">
+
+                <label>EAN/UPC</label>
+                <input type="text" name="ean_upc" value="{{ album.ean_upc|default:'' }}">
+
+                {% endif %}
+
+                <button type="submit" class="btn-submit">Guardar Alterações</button>
+            </form>
+
+            <a href="{% url 'colecao' %}" class="btn-voltar">← Voltar à coleção</a>
+        </div>
+    </div>
+</body>
+</html>

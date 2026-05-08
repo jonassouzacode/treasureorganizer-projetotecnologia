@@ -5,7 +5,7 @@ from accounts.models import Utilizador
 class Colecionavel(models.Model):
     tipo_colecionavel = models.CharField(max_length=5)
     titulo = models.CharField(max_length=255)
-    ano_lancamento = models.IntegerField(blank=True, null=True)
+    ano_lançamento = models.IntegerField(blank=True, null=True)
     id_genero = models.ForeignKey(Genero, models.DO_NOTHING, db_column='id_genero', blank=True, null=True)
     id_idioma = models.ForeignKey(Idioma, models.DO_NOTHING, db_column='id_idioma', blank=True, null=True)
 
@@ -57,7 +57,7 @@ class AlbumArtista(models.Model):
 
 class Colecao(models.Model):
     pk = models.CompositePrimaryKey('id_usuario', 'id_colecionavel')
-    id_usuario = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='id_usuario')
+    id_usuario = models.IntegerField()
     id_colecionavel = models.ForeignKey(Colecionavel, models.DO_NOTHING, db_column='id_colecionavel')
     data_aquisicao = models.DateField(blank=True, null=True)
 
@@ -67,7 +67,7 @@ class Colecao(models.Model):
 
 class ListaDesejos(models.Model):
     pk = models.CompositePrimaryKey('id_usuario', 'id_colecionavel')
-    id_usuario = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='id_usuario')
+    id_usuario = models.IntegerField()
     id_colecionavel = models.ForeignKey(Colecionavel, models.DO_NOTHING, db_column='id_colecionavel')
     data_adicao = models.DateField(blank=True, null=True)
 

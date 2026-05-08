@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Colecionável</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body {
+            font-family: Book Antiqua, serif;
+            background: #C6C0B9;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: #422701;
+            padding: 12px 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: #D6B588;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-user {
+            padding: 6px 14px;
+            background: #705E46;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: default;
+            font-family: Book Antiqua, serif;
+        }
+
+        .btn-logout {
+            padding: 6px 14px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: Book Antiqua, serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-logout:hover { 
+            background: #660F09; 
+        }
+
+        .page {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            flex: 1;
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #422701;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            color: #422701;
+            font-size: 15px;
+            font-weight: 500;
+            margin: 1.25rem 0 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid #D6B588;
+        }
+
+        label {
+            font-size: 12px;
+            color: #705E46;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #D6B588;
+            border-radius: 8px;
+            background: #fff8f0;
+            font-size: 14px;
+            color: #422701;
+            font-family: Book Antiqua, serif;
+            margin-bottom: 1rem;
+        }
+
+        input:focus { 
+            outline: none; 
+            border-color: #705E46; 
+        }
+
+        select {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #895129;
+            border-radius: 8px;
+            background: #fff8f0;;
+            font-size: 14px;
+            color: #422701;
+            font-family: Book Antiqua, serif;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        select:focus { 
+            outline: none; 
+            border-color: #705E46;
+        }
+
+        select option { 
+            background: #fff8f0;
+            color: #422701; 
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: Book Antiqua, serif;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover { 
+            background: #660F09; 
+        }
+
+        .btn-voltar {
+            display: block;
+            margin-top: 1rem;
+            padding: 10px;
+            background: #895129;
+            color: #D6B588;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            font-family: Book Antiqua, serif;
+        }
+
+        .btn-voltar:hover { 
+            background: #660F09; 
+        }
+
+        .campos-livro,
+        .campos-album { 
+            display: none; 
+        }
+
+        .campos-livro.visivel,
+        .campos-album.visivel { 
+            display: block; 
+        }
+
+        .lista-container {
+            width: 300px;
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+        }
+
+        .lista-container h2 {
+            color: #422701;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            border: none;
+            padding: 0;
+        }
+
+        .lista-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #D6B588;
+            font-size: 13px;
+            color: #422701;
+        }
+
+        .lista-item:last-child { 
+            border-bottom: none; 
+        }
+
+        .badge-tipo {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #895129;
+            color: #D6B588;
+            margin-left: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">
+            <i data-lucide="library-big" style="width:18px;height:18px;color:#D6B588;"></i>
+            TREASURE ORGANIZER
+        </div>
+        <div class="navbar-right">
+            <span class="btn-user">{{ request.user.username }}</span>
+            <a href="/logout/" class="btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="form-container">
+            <h1>Adicionar Colecionável</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="destino" value="{{ destino }}">
+
+                <label>Tipo</label>
+                <select name="tipo" id="tipo" onchange="mostrarCampos()">
+                    <option value="">-- Selecionar tipo --</option>
+                    <option value="Livro">Livro</option>
+                    <option value="Album">Álbum</option>
+                </select>
+
+                <label>Título</label>
+                <input type="text" name="titulo" placeholder="Título do colecionável">
+
+                <label>Ano de Lançamento</label>
+                <input type="number" name="ano" placeholder="Ex: 2023">
+
+                <label>Gênero</label>
+                <select name="id_genero">
+                    <option value="">-- Selecionar gênero --</option>
+                    {% for g in generos %}
+                    <option value="{{ g.id }}">{{ g.genero }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Idioma</label>
+                <select name="id_idioma">
+                    <option value="">-- Selecionar idioma --</option>
+                    {% for i in idiomas %}
+                    <option value="{{ i.id }}">{{ i.idioma }}</option>
+                    {% endfor %}
+                </select>
+
+                <div class="campos-livro" id="campos-livro">
+                    <h2>Detalhes do Livro</h2>
+
+                    <label>ISBN</label>
+                    <input type="text" name="isbn" placeholder="Ex: 9789720046101">
+
+                    <label>Autor(es)</label>
+                    <div style="background:#fff8f0; border:1px solid #D6B588; border-radius:8px; padding:8px 12px; margin-bottom:1rem; max-height:120px; overflow-y:auto;">
+                        {% for a in autores %}
+                        <div style="margin-bottom:4px;">
+                            <input type="checkbox" name="autores" value="{{ a.id }}" id="autor_{{ a.id }}">
+                            <label for="autor_{{ a.id }}" style="display:inline; font-size:13px; color:#422701; cursor:pointer;">{{ a.nome }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <label>Editora</label>
+                    <select name="id_editora">
+                        <option value="">-- Selecionar editora --</option>
+                        {% for e in editoras %}
+                        <option value="{{ e.id }}">{{ e.nome }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label>Tipo de Encadernação</label>
+                    <select name="id_encadernacao">
+                        <option value="">-- Selecionar encadernação --</option>
+                        {% for enc in encadernacoes %}
+                        <option value="{{ enc.id }}">{{ enc.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campos-album" id="campos-album">
+                    <h2>Detalhes do Álbum</h2>
+
+                    <label>Tipo de Álbum</label>
+                    <select name="tipo_album">
+                        <option value="">-- Selecionar tipo --</option>
+                        <option value="CD">CD</option>
+                        <option value="Vinil">Vinil</option>
+                    </select>
+
+                    <label>Artista(s)</label>
+                    <div style="background:#fff8f0; border:1px solid #D6B588; border-radius:8px; padding:8px 12px; margin-bottom:1rem; max-height:120px; overflow-y:auto;">
+                        {% for a in artistas %}
+                        <div style="margin-bottom:4px;">
+                            <input type="checkbox" name="artistas" value="{{ a.id }}" id="artista_{{ a.id }}">
+                            <label for="artista_{{ a.id }}" style="display:inline; font-size:13px; color:#422701; cursor:pointer;">{{ a.nome }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <label>Gravadora</label>
+                    <select name="id_gravadora">
+                        <option value="">-- Selecionar gravadora --</option>
+                        {% for g in gravadoras %}
+                        <option value="{{ g.id }}">{{ g.nome }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label>Número de Catálogo</label>
+                    <input type="text" name="numero_catalogo" placeholder="Opcional">
+
+                    <label>EAN/UPC</label>
+                    <input type="text" name="ean_upc" placeholder="Opcional">
+                </div>
+
+                {% if destino_titulo == 'Adicionar à Coleção' %}
+                    <label>Data de Aquisição</label>
+                    <input type="date" name="data_aquisicao">
+                {% endif %}
+                
+                {% if erro %}
+                    <p style="color:#660F09;font-size:13px;margin-bottom:1rem;">{{ erro }}</p>
+                {% endif %}
+
+                <button type="submit" class="btn-submit">Guardar Colecionável</button>
+            </form>
+
+            <a href="{% url 'colecao' %}" class="btn-voltar">← Voltar à coleção</a>
+        </div>
+
+        <div class="lista-container">
+            <span style="display:inline-block; padding:6px 14px; background:#705E46; color:#D6B588; border-radius:6px; font-size:13px; font-family:Book Antiqua,serif; margin-bottom:1rem;">Coleção</span>
+            {% for item in colecionaveis_existentes %}
+            <div class="lista-item">
+                {{ item.titulo }}
+                <span class="badge-tipo">{{ item.tipo_colecionavel }}</span>
+            </div>
+            {% empty %}
+            <p style="color:#705E46;font-size:13px;">Ainda não tens colecionáveis.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function mostrarCampos() {
+            var tipo = document.getElementById('tipo').value;
+            document.getElementById('campos-livro').className = 'campos-livro' + (tipo === 'Livro' ? ' visivel' : '');
+            document.getElementById('campos-album').className = 'campos-album' + (tipo === 'Album' ? ' visivel' : '');
+        }
+    </script>
+
+    <script>lucide.createIcons();</script>
+
+</body>
+</html>

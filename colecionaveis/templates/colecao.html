@@ -15,7 +15,7 @@
         body {
             font-family: Book Antiqua, serif;
             background: #C6C0B9;
-            min-height: 100hv;
+            min-height: 100vh;
         }
 
         .navbar {
@@ -183,7 +183,7 @@
             border: none;
             border-radius: 5px;
             font-size: 12px;
-            cursor: pointer:
+            cursor: pointer;
             font-family: Book Antiqua, serif;
             background: #f5ede0;
             color: #422701;
@@ -269,6 +269,78 @@
         .modal-close:hover {
             background: #660F09;
         }
+
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 8px;
+        }
+
+        .filtros input, .filtros select {
+            padding: 6px 10px;
+            border: 1px solid #D6B588;
+            border-radius: 6px;
+            background: #fff8f0;
+            font-size: 13px;
+            color: #422701;
+            font-family: Book Antiqua, serif;
+        }
+
+        label {
+            font-size: 12px;
+            color: #705E46;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #D6B588;
+            border-radius: 8px;
+            background: #fff8f0;
+            font-size: 14px;
+            color: #422701;
+            font-family: Book Antiqua, serif;
+            margin-bottom: 1rem;
+        }
+
+        input:focus { 
+            outline: none; 
+            border-color: #705E46; 
+        }
+
+        select {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #895129;
+            border-radius: 8px;
+            background: #fff8f0;;
+            font-size: 14px;
+            color: #422701;
+            font-family: Book Antiqua, serif;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        select:focus { 
+            outline: none; 
+            border-color: #705E46;
+        }
+
+        select option { 
+            background: #fff8f0;
+            color: #422701; 
+        }
+
     </style>
 </head>
 <body>
@@ -285,7 +357,7 @@
 
     <div class="main">
         <p class="welcome">Bem-vindo, {{ request.user.username }}!</p>
-        <p class="welcome-sub">Gira aqui os seus colecionáveis</p>
+        <p class="welcome-sub">Faça aqui a gestão dos seus colecionáveis</p>
 
         <div class="tabs">
             <button class="tab active" onclick="showTab('colecao', this)">Minha Coleção</button>
@@ -293,7 +365,10 @@
         </div>
         
         <div id="colecao" class="tab-content active">
-            <a href="/colecionaveis/adicionar" class="btn-add">+ Adicionar Colecionável </a>
+            <a href="{% url 'adicionar_colecao' %}" class="btn-add">+ Adicionar Colecionável </a>
+
+            <button type="button" class="btn-add" onclick="openFilterModal()">Filtrar</button>
+            <a href="{% url 'colecao' %}" class="btn-add">Limpar Filtros</a>
 
             {% for item in colecao %}
             <div class="item">
@@ -303,18 +378,23 @@
                         '{{ item.id_colecionavel.tipo_colecionavel }}',
                         '{{ item.id_colecionavel.id_genero.genero }}',
                         '{{ item.id_colecionavel.id_idioma.idioma }}',
-                        '{{ item.id_colecionavel.ano_lancamento }}',
-                        '{{ item.data_aquisicao }}'
+                        '{{ item.id_colecionavel.ano_lançamento }}',
+                        '{{ item.data_aquisicao }}',
+                        '{{ item.id_colecionavel.extra_autores|default:'' }}',
+                        '{{ item.id_colecionavel.extra_artistas|default:'' }}',
+                        '{{ item.id_colecionavel.extra_editora|default:'' }}',
+                        '{{ item.id_colecionavel.extra_gravadora|default:'' }}',
+                        '{{ item.id_colecionavel.extra_encadernacao|default:'' }}',
+                        '{{ item.id_colecionavel.extra_tipo_album|default:'' }}'
                     )">{{ item.id_colecionavel.titulo }}</span>
 
                     <span class="badge">{{ item.id_colecionavel.tipo_colecionavel}}</span>
 
-                    <div class="item-meta">{{ item.id_colecionavel.ano_lancamento }}</div>
                 </div>
                 <div class="item-actions">
-                    <a href="/colecionaveis/mover/{{ item.id_colecionavel.id }}/"><button class="btn-action">→ Desejos</button></a>
-                    <a href="/colecionaveis/editar/{{ item.id_colecionavel.id }}/"><button class="btn-action">Editar</button></a>
-                    <a href="/colecionaveis/remover/{{ item.id_colecionavel.id }}/"><button class="btn-action">Remover</button></a>
+                    <a href="{% url 'mover_para_desejos' item.id_colecionavel.id %}"><button class="btn-action">→ Desejos</button></a>
+                    <a href="{% url 'editar_colecionavel' item.id_colecionavel.id %}"><button class="btn-action">Editar</button></a>
+                    <a href="{% url 'remover_colecao' item.id_colecionavel.id %}"><button class="btn-action">Remover</button></a>
                 </div>
             </div>
 
@@ -324,7 +404,10 @@
         </div>
         
         <div id="desejos" class="tab-content">
-            <a href="/colecionaveis/adicionar-desejo" class="btn-add">+ Adicionar à Lista de Desejos </a>
+            <a href="{% url 'adicionar_desejos' %}" class="btn-add">+ Adicionar à Lista de Desejos </a>
+
+            <button type="button" class="btn-add" onclick="openFilterModal()">Filtrar</button>
+            <a href="{% url 'colecao' %}" class="btn-add">Limpar Filtros</a>
 
             {% for item in desejos %}
             <div class="item">
@@ -334,18 +417,23 @@
                         '{{ item.id_colecionavel.tipo_colecionavel }}',
                         '{{ item.id_colecionavel.id_genero.genero }}',
                         '{{ item.id_colecionavel.id_idioma.idioma }}',
-                        '{{ item.id_colecionavel.ano_lancamento }}',
-                        '{{ item.data_adicao }}'
+                        '{{ item.id_colecionavel.ano_lançamento }}',
+                        '',
+                        '{{ item.id_colecionavel.extra_autores|default:'' }}',
+                        '{{ item.id_colecionavel.extra_artistas|default:'' }}',
+                        '{{ item.id_colecionavel.extra_editora|default:'' }}',
+                        '{{ item.id_colecionavel.extra_gravadora|default:'' }}',
+                        '{{ item.id_colecionavel.extra_encadernacao|default:'' }}',
+                        '{{ item.id_colecionavel.extra_tipo_album|default:'' }}'
                     )">{{ item.id_colecionavel.titulo }}</span>
 
                     <span class="badge">{{ item.id_colecionavel.tipo_colecionavel}}</span>
 
-                    <div class="item-meta">{{ item.id_colecionavel.ano_lancamento }}</div>
                 </div>
                 <div class="item-actions">
-                    <a href="/colecionaveis/mover-colecao/{{ item.id_colecionavel.id }}/"><button class="btn-action">→ Coleção</button></a>
-                    <a href="/colecionaveis/editar/{{ item.id_colecionavel.id }}/"><button class="btn-action">Editar</button></a>
-                    <a href="/colecionaveis/remover-desejo/{{ item.id_colecionavel.id }}/"><button class="btn-action">Remover</button></a>
+                    <a href="{% url 'mover_para_colecao' item.id_colecionavel.id %}"><button class="btn-action">→ Coleção</button></a>
+                    <a href="{% url 'editar_colecionavel' item.id_colecionavel.id %}"><button class="btn-action">Editar</button></a>
+                    <a href="{% url 'remover_desejo' item.id_colecionavel.id %}"><button class="btn-action">Remover</button></a>
                 </div>
             </div>
 
@@ -356,36 +444,109 @@
     </div>
 
     <div class="modal-overlay" id="modal">
-        <div class="modal">
-            <p class="modal-title" id="modal-title"></p>
-            <div class="modal-row">
-                <span class="modal-label">Tipo</span>
-                <span class="modal-value" id="modal-tipo"></span>
-            </div>
-
-            <div class="modal-row">
-                <span class="modal-label">Gênero</span>
-                <span class="modal-value" id="modal-genero"></span>
-            </div>
-
-            <div class="modal-row">
-                <span class="modal-label">Idioma</span>
-                <span class="modal-value" id="modal-idioma"></span>
-            </div>
-
-            <div class="modal-row">
-                <span class="modal-label">Ano de Lançamento</span>
-                <span class="modal-value" id="modal-ano"></span>
-            </div>
-
-            <div class="modal-row">
-                <span class="modal-label">Data de Aquisição</span>
-                <span class="modal-value" id="modal-data"></span>
-            </div>
-
-            <button class="modal-close" onclick="closeModal()">Fechar</button>
+    <div class="modal">
+        <p class="modal-title" id="modal-title"></p>
+        <div class="modal-row">
+            <span class="modal-label">Tipo</span>
+            <span class="modal-value" id="modal-tipo"></span>
         </div>
+        <div class="modal-row">
+            <span class="modal-label">Género</span>
+            <span class="modal-value" id="modal-genero"></span>
+        </div>
+        <div class="modal-row">
+            <span class="modal-label">Idioma</span>
+            <span class="modal-value" id="modal-idioma"></span>
+        </div>
+        <div class="modal-row">
+            <span class="modal-label">Ano de Lançamento</span>
+            <span class="modal-value" id="modal-ano"></span>
+        </div>
+        <div class="modal-row">
+            <span class="modal-label">Data</span>
+            <span class="modal-value" id="modal-data"></span>
+        </div>
+        <div class="modal-row" id="row-autores">
+            <span class="modal-label">Autor(es)</span>
+            <span class="modal-value" id="modal-autores"></span>
+        </div>
+        <div class="modal-row" id="row-artistas">
+            <span class="modal-label">Artista(s)</span>
+            <span class="modal-value" id="modal-artistas"></span>
+        </div>
+        <div class="modal-row" id="row-editora">
+            <span class="modal-label">Editora</span>
+            <span class="modal-value" id="modal-editora"></span>
+        </div>
+        <div class="modal-row" id="row-gravadora">
+            <span class="modal-label">Gravadora</span>
+            <span class="modal-value" id="modal-gravadora"></span>
+        </div>
+        <div class="modal-row" id="row-encadernacao">
+            <span class="modal-label">Encadernação</span>
+            <span class="modal-value" id="modal-encadernacao"></span>
+        </div>
+        <div class="modal-row" id="row-tipo-album">
+            <span class="modal-label">Tipo de Álbum</span>
+            <span class="modal-value" id="modal-tipo-album"></span>
+        </div>
+        <button class="modal-close" onclick="closeModal()">Fechar</button>
     </div>
+</div>
+
+<div class="modal-overlay" id="filter-modal">
+    <div class="modal">
+
+        <p class="modal-title">Filtrar Colecionáveis</p>
+
+        <form method="GET">
+
+            <label>Título</label>
+            <input type="text" name="buscar" placeholder="Título do colecionável">
+
+            <label>Tipo</label>
+            <select name="tipo">
+                <option value="">-- Selecionar tipo --</option>
+                <option value="Livro">Livro</option>
+                <option value="Album">Álbum</option>
+            </select>
+
+            <label>Tipo de Álbum</label>
+            <select name="tipo_album">
+                <option value="">-- Selecionar tipo --</option>
+                <option value="CD">CD</option>
+                <option value="Vinil">Vinil</option>
+            </select>
+
+            <label>Gênero</label>
+            <select name="id_genero">
+                <option value="">-- Selecionar gênero --</option>
+                {% for g in generos %}
+                    <option value="{{ g.id }}">{{ g.genero }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Idioma</label>
+            <select name="id_idioma">
+                <option value="">-- Selecionar idioma --</option>
+                {% for i in idiomas %}
+                    <option value="{{ i.id }}">{{ i.idioma }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Ano de Lançamento</label>
+            <div style="display:flex; gap:8px;">
+                <input type="number" name="ano_min" placeholder="Ex: 2000">
+                <input type="number" name="ano_max" placeholder="Ex: 2023">
+            </div>
+
+            <button type="submit" class="modal-close">Aplicar Filtros</button>
+        </form>
+
+        <button class="modal-close" onclick="closeFilterModal()">Fechar</button>
+
+    </div>
+</div>
 
     <script>
         function showTab(tab, btn){
@@ -395,19 +556,42 @@
             btn.classList.add('active');
         }
 
-        function openModal(titulo, tipo, genero, idioma, ano, data){
+        function openModal(titulo, tipo, genero, idioma, ano, data, autores, artistas, editora, gravadora, encadernacao, tipoAlbum) {
             document.getElementById('modal-title').textContent = titulo;
             document.getElementById('modal-tipo').textContent = tipo;
             document.getElementById('modal-genero').textContent = genero;
             document.getElementById('modal-idioma').textContent = idioma;
             document.getElementById('modal-ano').textContent = ano;
             document.getElementById('modal-data').textContent = data;
+            document.getElementById('modal-autores').textContent = autores;
+            document.getElementById('modal-artistas').textContent = artistas;
+            document.getElementById('modal-editora').textContent = editora;
+            document.getElementById('modal-gravadora').textContent = gravadora;
+            document.getElementById('modal-encadernacao').textContent = encadernacao;
+            document.getElementById('modal-tipo-album').textContent = tipoAlbum;
+
+            document.getElementById('row-autores').style.display = autores ? 'flex' : 'none';
+            document.getElementById('row-artistas').style.display = artistas ? 'flex' : 'none';
+            document.getElementById('row-editora').style.display = editora ? 'flex' : 'none';
+            document.getElementById('row-gravadora').style.display = gravadora ? 'flex' : 'none';
+            document.getElementById('row-encadernacao').style.display = encadernacao ? 'flex' : 'none';
+            document.getElementById('row-tipo-album').style.display = tipoAlbum ? 'flex' : 'none';
+
             document.getElementById('modal').classList.add('open');
         }
 
         function closeModal(){
             document.getElementById('modal').classList.remove('open');
         }
+
+        function openFilterModal() {
+            document.getElementById('filter-modal').classList.add('open');
+        }
+
+        function closeFilterModal() {
+            document.getElementById('filter-modal').classList.remove('open');
+        }
+
     </script>
     
     <script>lucide.createIcons();</script>
