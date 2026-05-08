@@ -58,8 +58,8 @@ def generos_delete(request, id):
             item.delete()
             return redirect('generos_list')
         except Exception:
-             return render(request, 'catalogo/remover.html', {'titulo': 'Gênero', 'nome': item.genero, 'url_voltar': 'generos.list', 'erro': 'Esse gênero não pode ser removido pois está associado a um ou mais colecionáveis!'})            
-    return render(request, 'catalogo/remover.html', {'titulo': 'Gênero', 'nome': item.genero, 'url_voltar': 'generos.list'})
+             return render(request, 'catalogo/remover.html', {'titulo': 'Gênero', 'nome': item.genero, 'url_voltar': 'generos_list', 'erro': 'Esse gênero não pode ser removido pois está associado a um ou mais colecionáveis!'})            
+    return render(request, 'catalogo/remover.html', {'titulo': 'Gênero', 'nome': item.genero, 'url_voltar': 'generos_list'})
 
 @login_required
 def idiomas_list(request):
@@ -158,8 +158,8 @@ def autores_delete(request, id):
             item.delete()
             return redirect('autores_list')
         except Exception: 
-             return render(request, 'catalogo/remover.html', {'titulo': 'Autor', 'nome': item.nome, 'url_voltar': 'autores.list', 'erro': 'Esse autor não pode ser removido pois está associado a um ou mais colecionáveis!' })
-    return render(request, 'catalogo/remover.html', {'titulo': 'Autor', 'nome': item.nome, 'url_voltar': 'autores.list'})
+             return render(request, 'catalogo/remover.html', {'titulo': 'Autor', 'nome': item.nome, 'url_voltar': 'autores_list', 'erro': 'Esse autor não pode ser removido pois está associado a um ou mais colecionáveis!' })
+    return render(request, 'catalogo/remover.html', {'titulo': 'Autor', 'nome': item.nome, 'url_voltar': 'autores_list'})
 
 @login_required
 def artistas_list(request):

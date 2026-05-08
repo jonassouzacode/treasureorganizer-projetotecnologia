@@ -90,13 +90,14 @@
         <h1> Confirmar Remoção</h1>
         <p> Tem certeza que deseja remover <strong>{{ nome }}</strong>?</p>
 
+        {% if erro %}
+            <p style="color:#660F09;font-size:13px;margin-bottom:1rem;"> {{ erro }}</p>
+        {% endif %}
+
         <div class="actions">
             <form method="POST" style="flex:1">
                 {% csrf_token %}
                 <button type="submit" class="btn-remover" style="width:100%">Remover</button>
-                {% if erro %}
-                <p style="color:#660F09;font-size:13px;margin-bottom:1rem;"> {{ erro }}</p>
-                {% endif %}
             </form>
             <a href="{% url url_voltar %}" class="btn-voltar">Voltar</a>
         </div>
