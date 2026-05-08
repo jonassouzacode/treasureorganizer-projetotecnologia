@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo do Administrador</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        } 
+
+        body {
+            font-family: Book Antiqua, serif;
+            background: #C6C0B9;
+            min-height: 100hv;
+        }
+
+        .navbar {
+            background: #422701;
+            padding: 12px 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: #D6B588;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-user {
+            padding: 6px 14px;
+            background: #705E46;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: Book Antiqua, serif;
+            cursor: default;
+        }
+
+        .btn-logout {
+            padding: 6px 14px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: Book Antiqua, serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-logout:hover {
+            background: #660F09;
+        }
+
+        .main {
+            padding: 2rem;
+        }
+
+        .welcome {
+            color: #422701;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .welcome-sub {
+            color: #705E46;
+            font-size: 13px;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: #422701;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            background: #f5ede0;
+            border: 1px solid #D6B588;
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #705E46;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.75rem;
+        }
+
+        .card-title {
+            color: #422701;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .card-sub {
+            color: #422701;
+            font-size: 12px;
+            margin-bottom: 0.75rem;
+        }
+
+        .btn-gerir {
+            width: 100%;
+            padding: 6px;
+            background: #895129;
+            color: #D6B588;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: Book Antiqua, serif;
+            cursor: pointer;
+        }
+
+        .btn-gerir:hover {
+            background: #660F09;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">
+            <i data-lucide="library-big" style="width:18px;height:18px;color:#D6B588;"></i>
+            TREASURE ORGANIZER
+        </div>
+        <div class="navbar-right">
+            <span class="btn-user">{{ request.user.username }}</span>
+            <a href="/logout/" class="btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <p class="welcome"> Bem-vindo, {{ request.user.username }}</p>
+        <p class="welcome-sub"> Catálogo do Administrador — gira aqui o catálogo da aplicação! </p>
+
+        <p class="section-title">Catálogo</p>
+        <div class="grid">
+
+            <div class="card">
+                <div class="card-icon"><i data-lucide="mic-vocal" style="width:18px;height:18px;color:#D6B588;"></i></div>
+                <p class="card-title">Artistas</p>
+                <p class="card-sub">Gerir Artistas</p>
+                <a href="/catalogo/artistas/"><button class="btn-gerir">Gerir</button></a>
+            </div>
+
+             <div class="card">
+                <div class="card-icon"><i data-lucide="user-round-pen" style="width:18px;height:18px;color:#D6B588;"></i></div>
+                <p class="card-title">Autores</p>
+                <p class="card-sub">Gerir Autores</p>
+                <a href="/catalogo/autores/"><button class="btn-gerir">Gerir</button></a>
+            </div>
+
+             <div class="card">
+                <div class="card-icon"><i data-lucide="tag" style="width:18px;height:18px;color:#D6B588;"></i></div>
+                <p class="card-title">Gêneros</p>
+                <p class="card-sub">Gerir Gêneros</p>
+                <a href="/catalogo/generos/"><button class="btn-gerir">Gerir</button></a>
+            </div>
+
+             <div class="card">
+                <div class="card-icon"><i data-lucide="globe" style="width:18px;height:18px;color:#D6B588;"></i></div>
+                <p class="card-title">Idiomas</p>
+                <p class="card-sub">Gerir Idiomas</p>
+                <a href="/catalogo/idiomas/"><button class="btn-gerir">Gerir</button></a>
+            </div>
+
+             <div class="card">
+                <div class="card-icon"><i data-lucide="building" style="width:18px;height:18px;color:#D6B588;"></i></div>
+                <p class="card-title">Editoras</p>
+                <p class="card-sub">Gerir Editoras</p>
+                <a href="/catalogo/editoras/"><button class="btn-gerir">Gerir</button></a>
+            </div>
+
+             <div class="card">
+                <div class="card-icon"><i data-lucide="music" style="width:18px;height:18px;color:#D6B588;"></i></div>
+                <p class="card-title">Gravadoras</p>
+                <p class="card-sub">Gerir Gravadoras</p>
+                <a href="/catalogo/gravadoras/"><button class="btn-gerir">Gerir</button></a>
+            </div>
+
+             <div class="card">
+                <div class="card-icon"><i data-lucide="book-open-text" style="width:18px;height:18px;color:#D6B588;"></i></div>
+                <p class="card-title">Encadernação</p>
+                <p class="card-sub">Gerir Tipos</p>
+                <a href="/catalogo/encadernacoes/"><button class="btn-gerir">Gerir</button></a>
+            </div>
+        </div>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
